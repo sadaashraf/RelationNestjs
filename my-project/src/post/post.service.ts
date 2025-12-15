@@ -22,11 +22,11 @@ export class PostService {
   }
 
   findAll() {
-    return this.postRepo.find({ relations: ['user', 'comment'] })
+    return this.postRepo.find({ relations: ['user', 'comments'] })
   }
 
   async findOne(id: number) {
-    const post = await this.postRepo.findOne({ where: { id }, relations: ['user', 'commment'] });
+    const post = await this.postRepo.findOne({ where: { id }, relations: ['user', 'comments'] });
     if (!post) throw new NotFoundException("post not found");
     return post;
   }

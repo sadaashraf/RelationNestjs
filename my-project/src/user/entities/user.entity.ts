@@ -1,7 +1,7 @@
 
 import { Comment } from "src/comment/entities/comment.entity";
 import { Post } from "src/post/entities/post.entity";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -14,7 +14,7 @@ export class User {
   @OneToMany(() => Post, post => post.user)
   posts: Post[];
 
-  @ManyToMany(() => Comment, comment => comment.user)
+  @OneToMany(() => Comment, comment => comment.user)
   comments: Comment[];
 
   @CreateDateColumn()

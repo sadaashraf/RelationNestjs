@@ -24,53 +24,33 @@ export class CommentService {
     const post = await this.postRepo.findOne({ where: { id: postId } });
     if (!post) throw new NotFoundException('post not found');
 
-    // const user = this.userRepo.findOne({ where: { id: createCommentDto.userId } })
-    // if (!user) throw new NotFoundException('User not found')
-    // const post = this.postRepo.findOne({ where: { id: createCommentDto.postId } });
-    // if (!post) throw new NotFoundException('post not found');
-    const comment = await this.commentRepo.create({ text, user, post });
+    const comment = this.commentRepo.create({ text, user, post });
     return this.commentRepo.save(comment);
   }
 
-  // async create(createCommentDto: CreateCommentDto) {
-  //   const { userId, postId, text } = createCommentDto;
-
-  //   // Validate user
-  //   const user = await this.userRepo.findOne({ where: { id: userId } });
-  //   if (!user) {
-  //     throw new NotFoundException('User not found');
-  //   }
-
-  //   // Validate post
-  //   const post = await this.postRepo.findOne({ where: { id: postId } });
-  //   if (!post) {
-  //     throw new NotFoundException('Post not found');
-  //   }
-
-  //   // Create comment with relations
-  //   const comment = this.commentRepo.create({
-  //     text,
-  //     user,
-  //     post
-  //   });
-
-  //   return this.commentRepo.save(comment);
-  // }
-
-
   findAll() {
-    return `This action returns all comment`;
+    return this.commentRepo.find({
+      relations: ['user', 'post']
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} comment`;
+  async findOne(id: number) {
+    const comment = await this.commentRepo.findOne({
+      where: { id },
+      relations: ['user', 'post']
+    });
+    if (!comment) throw new NotFoundException('Comment not found');
+    return comment;
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
+  async update(id: number, updateCommentDto: UpdateCommentDto) {
+    const comment = await this.commentRepo.findOne({ where: { id } });
+    if (!comment) throw new NotFoundException('Comment not found');
+    Object.assign(comment, updateCommentDto)
+    return this.commentRepo.save(comment);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} comment`;
+    return this.commentRepo.delete(id);
   }
 }
