@@ -1,5 +1,5 @@
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Profile {
@@ -13,6 +13,7 @@ export class Profile {
   age: number;
 
   @OneToOne(() => User, user => user.profile)
+  @JoinColumn()
   user: User;
 
 }
