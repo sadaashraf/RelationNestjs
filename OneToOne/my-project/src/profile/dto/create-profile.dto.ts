@@ -6,7 +6,7 @@ export class CreateProfileDto {
   bio: string;
 
   @IsNumber()
-  Experence: number;
+  age: number;
 
   @IsNumber()
   userId: number;
