@@ -32,13 +32,14 @@ export class ProfileService {
     })
   }
 
-  update(id: number, updateProfileDto: UpdateProfileDto) {
-    const profile = this.profilerepo.findOne(
+  async update(id: number, updateProfileDto: UpdateProfileDto) {
+    const profile = await this.profilerepo.findOne(
       { where: { id } }
     );
-    if (!profile)
-      throw new NotFoundException("Profile not found")
+    if (!profile) { throw new NotFoundException("Profile not found") }
 
+    Object.assign(profile, updateProfileDto);
+    return this.profilerepo.save(profile);
   }
 
   remove(id: number) {
