@@ -4,24 +4,16 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from './entities/profile.entity';
-import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class ProfileService {
 
   constructor(
     @InjectRepository(Profile)
-    private readonly profilerepo: Repository<Profile>,
-    @InjectRepository(User)
-    private readonly userrepo: Repository<User>
+    private readonly profilerepo: Repository<Profile>
   ) { }
   async create(createProfileDto: CreateProfileDto) {
     try {
-      const { bio, age, userId } = createProfileDto
-      const user = await this.userrepo.findOne({ where: { id: userId } })
-      if (!user) {
-        throw new NotFoundException("User not found")
-      }
       const profile = this.profilerepo.create(createProfileDto);
       return await this.profilerepo.save(profile)
     } catch (error) {
@@ -50,6 +42,6 @@ export class ProfileService {
   }
 
   remove(id: number) {
-
+    return this.profilerepo.delete(id);
   }
 }

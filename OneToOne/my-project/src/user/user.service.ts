@@ -40,13 +40,9 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    else {
-      Object.assign(user, updateUserDto);
-      return this.userRepo.save(user);
-    }
 
-    // Object.assign(user, updateUserDto);
-    // return this.userRepo.save(user);
+    Object.assign(user, updateUserDto);
+    return this.userRepo.save(user);
 
   }
 
