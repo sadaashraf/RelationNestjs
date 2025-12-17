@@ -8,7 +8,4 @@ export class CreateProfileDto {
   @IsNumber()
   age: number;
 
-  @IsNumber()
-  userId: number;
-
 }

@@ -12,6 +12,6 @@ export class User {
   @Column()
   name: string;
 
-  @OneToOne(() => Profile, profile => profile.user)
+  @OneToOne(() => Profile, profile => profile.user, { cascade: true, eager: true })
   profile: Profile;
 }
