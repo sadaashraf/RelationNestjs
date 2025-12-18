@@ -1,4 +1,4 @@
-import { IsNumber, IsString, } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, } from "class-validator";
 
 export class CreateProfileDto {
 
@@ -7,5 +7,9 @@ export class CreateProfileDto {
 
   @IsNumber()
   age: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  userId: number;
 
 }

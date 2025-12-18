@@ -4,20 +4,35 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from './entities/profile.entity';
+import { User } from 'src/user/entities/user.entity';
+import { error } from 'console';
 
 @Injectable()
 export class ProfileService {
 
   constructor(
     @InjectRepository(Profile)
-    private readonly profilerepo: Repository<Profile>
+    private readonly profilerepo: Repository<Profile>,
+
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>
   ) { }
-  async create(createProfileDto: CreateProfileDto) {
+
+  async create(CreateProfileDto: CreateProfileDto) {
     try {
-      const profile = this.profilerepo.create(createProfileDto);
-      return await this.profilerepo.save(profile)
+      const user = await this.userRepo.findOne({ where: { id: CreateProfileDto.userId } });
+      if (!user) throw new NotFoundException('User not found');
+
+      const { userId, ...profileData } = CreateProfileDto;
+      const profile = this.profilerepo.create(
+        {
+          ...profileData,
+          user,
+        }
+      )
+      return this.profilerepo.save(profile);
     } catch (error) {
-      throw new InternalServerErrorException('Profile is not created');
+      throw new InternalServerErrorException("profile data is not created")
     }
   }
 
