@@ -17,7 +17,7 @@ export class UserService {
       const user = this.userRepo.create(userdto);
       return await this.userRepo.save(user);
     } catch (error) {
-      throw new InternalServerErrorException('User are not created');
+      throw new InternalServerErrorException('User  not created');
     }
 
   }
