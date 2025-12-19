@@ -6,7 +6,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from './entities/profile.entity';
 import { User } from 'src/user/entities/user.entity';
 
-
 @Injectable()
 export class ProfileService {
 
@@ -32,7 +31,7 @@ export class ProfileService {
       )
       return this.profilerepo.save(profile);
     } catch (error) {
-      throw new InternalServerErrorException("profile data is not created")
+      throw new InternalServerErrorException("profile data not created")
     }
   }
 
