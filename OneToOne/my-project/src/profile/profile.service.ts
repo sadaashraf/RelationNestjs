@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from './entities/profile.entity';
 import { User } from 'src/user/entities/user.entity';
-import { error } from 'console';
+
 
 @Injectable()
 export class ProfileService {
