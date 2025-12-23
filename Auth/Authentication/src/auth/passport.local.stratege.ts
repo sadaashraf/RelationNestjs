@@ -10,7 +10,7 @@ export class PassportLocalStrategy extends PassportStrategy(Strategy) {
     super();
   }
   async validate(username: string, password: string): Promise<userEntity> {
-    const user = this.userServices.getUserByName(username);
+    const user = await this.userServices.getUserByName(username);
     if (user && user.password === password) {
       return user;
     }
