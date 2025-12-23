@@ -12,4 +12,10 @@ export class AppController {
   async login(@Request() req) {
     return await this.authService.generateToken(req.user);
   }
+
+  @Get('/app-developer')
+  // @UseGuards(AuthGuard('jwt'))
+  getDeveloperProfile() {
+    return 'this is a adroid developer profile';
+  }
 }
