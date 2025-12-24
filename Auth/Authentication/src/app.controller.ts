@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "./auth/auth.service";
+import { RoleGuard } from "./role.gard";
 
 
 @Controller("app")
@@ -9,13 +10,19 @@ export class AppController {
 
   @Post('/login')
   @UseGuards(AuthGuard('local'))
-  async login(@Request() req) {
-    return await this.authService.generateToken(req.user);
+  login(@Request() req) {
+    return this.authService.generateToken(req.user);
   }
 
   @Get('/app-developer')
-  // @UseGuards(AuthGuard('jwt'))
-  getDeveloperProfile() {
-    return 'this is a adroid developer profile';
+  @UseGuards(AuthGuard('jwt'), new RoleGuard('CONSTANTS.ROLLES.ANDROID_DEVELOPER'))
+  getDeveloperProfile(@Request() req) {
+    return 'this is a android developer profile' + JSON.stringify(req.user);
+  }
+
+  @Get('/web-developer')
+  @UseGuards(AuthGuard('jwt'), new RoleGuard('CONSTANTS.ROLLES.WEB_DEVELOPER'))
+  getWebDeveloperProfile(@Request() req) {
+    return 'this is a web developer profile' + JSON.stringify(req.user);
   }
 }
