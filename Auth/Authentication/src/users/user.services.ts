@@ -20,9 +20,11 @@ export class UserServices {
     },
     {
       username: 'user3',
+
+      
       password: 'admin3',
       email: 'user3@example.com',
-      age: 24,
+      age: 28,
       role: 'CONSTANTS.ROLLES.ANDROID_DEVELOPER'
     }
   ]
