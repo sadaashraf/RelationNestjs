@@ -1,13 +1,22 @@
-import { Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "./auth/auth.service";
 import { RoleGuard } from "./role.gard";
+import { CONSTANTS } from "./constants";
+import { UserServices } from "./users/user.services";
+import { CreateUserDto } from "./users/user.dto";
 
 
 @Controller("app")
 export class AppController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService,
+    private readonly userService: UserServices
+  ) { }
 
+  @Post()
+  create(@Body() CreateUserDto: CreateUserDto) {
+    return this.userService.create(CreateUserDto);
+  }
   @Post('/login')
   @UseGuards(AuthGuard('local'))
   login(@Request() req) {
@@ -15,13 +24,13 @@ export class AppController {
   }
 
   @Get('/app-developer')
-  @UseGuards(AuthGuard('jwt'), new RoleGuard('CONSTANTS.ROLLES.ANDROID_DEVELOPER'))
+  @UseGuards(AuthGuard('jwt'), RoleGuard(CONSTANTS.ROLES.ANDROID_DEVELOPER))
   getDeveloperProfile(@Request() req) {
     return 'this is a android developer profile' + JSON.stringify(req.user);
   }
 
   @Get('/web-developer')
-  @UseGuards(AuthGuard('jwt'), new RoleGuard('CONSTANTS.ROLLES.WEB_DEVELOPER'))
+  @UseGuards(AuthGuard('jwt'), RoleGuard(CONSTANTS.ROLES.WEB_DEVELOPER))
   getWebDeveloperProfile(@Request() req) {
     return 'this is a web developer profile' + JSON.stringify(req.user);
   }

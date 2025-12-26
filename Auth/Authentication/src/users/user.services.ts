@@ -1,34 +1,26 @@
-import { Injectable } from "@nestjs/common"
+
 import { userEntity } from "./user.entity"
+import { InjectRepository } from "@nestjs/typeorm"
+import { Repository } from "typeorm"
+import { CreateUserDto } from "./user.dto"
+import { Injectable } from "@nestjs/common"
 
 @Injectable()
 export class UserServices {
-  public user: userEntity[] = [
-    {
-      username: 'user1',
-      password: 'admin1',
-      email: 'user1@example.com',
-      age: 24,
-      role: 'CONSTANTS.ROLLES.ANDROID_DEVELOPER'
-    },
-    {
-      username: 'user2',
-      password: 'admin2',
-      email: 'user2@example.com',
-      age: 30,
-      role: 'CONSTANTS.ROLLES.WEB_DEVELOPER'
-    },
-    {
-      username: 'user3',
-
-      
-      password: 'admin3',
-      email: 'user3@example.com',
-      age: 28,
-      role: 'CONSTANTS.ROLLES.ANDROID_DEVELOPER'
-    }
-  ]
-  getUserByName(username: string): userEntity | undefined {
-    return this.user.find(user => user.username === username)
+  constructor(
+    @InjectRepository(userEntity)
+    private readonly userRepo: Repository<userEntity>,
+  ) { }
+  create(userdto: CreateUserDto) {
+    const user = this.userRepo.create(userdto)
+    return this.userRepo.save(user)
+  }
+  getUserByName(username: string) {
+    return this.userRepo.findOne(
+      {
+        where: { username }
+      })
   }
 }
+
+
