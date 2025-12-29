@@ -4,7 +4,6 @@ import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 import { CreateUserDto } from "./user.dto"
 import { Injectable, NotFoundException } from "@nestjs/common"
-import { NotFoundError } from "rxjs"
 import { UpdateUserDto } from "./update.user.dto"
 
 @Injectable()
