@@ -3,7 +3,9 @@ import { userEntity } from "./user.entity"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 import { CreateUserDto } from "./user.dto"
-import { Injectable } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
+import { NotFoundError } from "rxjs"
+import { UpdateUserDto } from "./update.user.dto"
 
 @Injectable()
 export class UserServices {
@@ -15,12 +17,46 @@ export class UserServices {
     const user = this.userRepo.create(userdto)
     return this.userRepo.save(user)
   }
-  getUserByName(username: string) {
-    return this.userRepo.findOne(
+  findAll() {
+    return this.userRepo.find()
+  }
+  async getUserByName(username: string) {
+    const user = await this.userRepo.findOne(
       {
         where: { username }
       })
+    if (!user) {
+      throw new NotFoundException("user not found")
+    }
+    return user;
+  }
+  async findOne(id: number) {
+    const user = await this.userRepo.findOne({
+      where: { id }
+    });
+    if (!user) {
+      throw new NotFoundException("user not found");
+    }
+    return user;
+  }
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepo.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException("user not found");
+    }
+    Object.assign(user, updateUserDto);
+    return this.userRepo.save(user);
+  }
+
+  async remove(id: number) {
+    const user = await this.userRepo.findOneBy({ id })
+    if (!user) {
+      return new NotFoundException('id not found')
+
+    }
+    await this.userRepo.remove(user)
+    return {
+      message: "deleted successfully"
+    }
   }
 }
-
-

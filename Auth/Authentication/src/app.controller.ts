@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "./auth/auth.service";
 import { RoleGuard } from "./role.gard";
 import { CONSTANTS } from "./constants";
 import { UserServices } from "./users/user.services";
 import { CreateUserDto } from "./users/user.dto";
+import { UpdateUserDto } from "./users/update.user.dto";
 
 
 @Controller("app")
@@ -34,4 +35,29 @@ export class AppController {
   getWebDeveloperProfile(@Request() req) {
     return 'this is a web developer profile' + JSON.stringify(req.user);
   }
+
+  // @Get(':username')
+  // findOne(@Param('username') username: string) {
+  //   return this.userService.getUserByName(username);
+  // }
+
+  @Get()
+  findAll() {
+    return this.userService.findAll();
+  }
+  @Get(':id')
+  findOn(@Param('id') id: string) {
+    return this.userService.findOne(+id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(+id, updateUserDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.userService.remove(+id);
+  }
+
 }
