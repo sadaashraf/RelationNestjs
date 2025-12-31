@@ -42,7 +42,7 @@ export class AppController {
     @Query('page') page = 1,
     @Query('limit') limit = 10,
   ) {
-    return this.userService.findAll(age);
+    return this.userService.findAll(age, page, limit);
   }
 
   // @Get()
