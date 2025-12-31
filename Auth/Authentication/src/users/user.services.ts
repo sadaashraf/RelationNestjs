@@ -16,9 +16,22 @@ export class UserServices {
     const user = this.userRepo.create(userdto)
     return this.userRepo.save(user)
   }
-  findAll() {
-    return this.userRepo.find()
+
+  async findAll(age?: number) {
+
+    // agar age di ho → filter
+    if (age) {
+      return this.userRepo.find({
+        where: { age: Number(age) },
+      });
+    }
+
+    // agar age na ho → sab users
+    return this.userRepo.find();
   }
+  // findAll() {
+  //   return this.userRepo.find()
+  // }
   async getUserByName(username: string) {
     const user = await this.userRepo.findOne(
       {

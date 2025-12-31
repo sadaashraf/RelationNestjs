@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "./auth/auth.service";
 import { RoleGuard } from "./role.gard";
@@ -36,15 +36,16 @@ export class AppController {
     return 'this is a web developer profile' + JSON.stringify(req.user);
   }
 
-  // @Get(':username')
-  // findOne(@Param('username') username: string) {
-  //   return this.userService.getUserByName(username);
+  @Get()
+  findAll(@Query('age') age?: number) {
+    return this.userService.findAll(age);
+  }
+
+  // @Get()
+  // findAll() {
+  //   return this.userService.findAll();
   // }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
   @Get(':id')
   findOn(@Param('id') id: string) {
     return this.userService.findOne(+id);
@@ -61,3 +62,8 @@ export class AppController {
   }
 
 }
+
+// @Get(':username')
+// findOne(@Param('username') username: string) {
+//   return this.userService.getUserByName(username);
+// }
