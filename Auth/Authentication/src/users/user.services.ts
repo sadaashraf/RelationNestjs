@@ -17,17 +17,22 @@ export class UserServices {
     return this.userRepo.save(user)
   }
 
-  async findAll(age?: number) {
-
+  async findAll(age?: number, page = 1, limit = 10) {
+    const skip = (page - 1) * limit;
     // agar age di ho → filter
     if (age) {
       return this.userRepo.find({
         where: { age: Number(age) },
+        skip,
+        take: limit,
       });
     }
 
     // agar age na ho → sab users
-    return this.userRepo.find();
+    return this.userRepo.find({
+      skip,
+      take: limit,
+    });
   }
   // findAll() {
   //   return this.userRepo.find()
