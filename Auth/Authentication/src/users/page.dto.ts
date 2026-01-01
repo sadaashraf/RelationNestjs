@@ -4,9 +4,9 @@ export class Pagenation {
   @IsNumber()
   @IsOptional()
   @IsPositive()
-  skip: Number
+  skip: number = 0
   @IsNumber()
   @IsOptional()
   @IsPositive()
-  limit: Number
+  limit: number = 10
 }
