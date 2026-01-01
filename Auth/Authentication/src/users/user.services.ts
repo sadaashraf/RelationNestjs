@@ -5,6 +5,8 @@ import { Repository } from "typeorm"
 import { CreateUserDto } from "./user.dto"
 import { Injectable, NotFoundException } from "@nestjs/common"
 import { UpdateUserDto } from "./update.user.dto"
+import { Pagenation } from "./page.dto"
+
 
 @Injectable()
 export class UserServices {
@@ -17,23 +19,16 @@ export class UserServices {
     return this.userRepo.save(user)
   }
 
-  async findAll(age?: number, page = 1, limit = 10) {
-    const skip = (page - 1) * limit;
-    // agar age di ho → filter
-    if (age) {
-      return this.userRepo.find({
-        where: { age: Number(age) },
-        skip,
-        take: limit,
-      });
-    }
+  async findAll(age?: number, pagenation?: Pagenation) {
+    const { skip = 0, limit = 10 } = pagenation || {};
 
-    // agar age na ho → sab users
     return this.userRepo.find({
+      where: age !== undefined ? { age } : {},
       skip,
       take: limit,
     });
   }
+
   // findAll() {
   //   return this.userRepo.find()
   // }

@@ -6,6 +6,7 @@ import { CONSTANTS } from "./constants";
 import { UserServices } from "./users/user.services";
 import { CreateUserDto } from "./users/user.dto";
 import { UpdateUserDto } from "./users/update.user.dto";
+import { Pagenation } from "./users/page.dto";
 
 
 @Controller("app")
@@ -38,11 +39,13 @@ export class AppController {
 
   @Get()
   findAll(
-    @Query('age') age?: number,
-    @Query('page') page = 1,
-    @Query('limit') limit = 10,
+    @Query() pagenation: Pagenation,
+    @Query('age') age?: string,
   ) {
-    return this.userService.findAll(age, page, limit);
+    return this.userService.findAll(
+      age ? Number(age) : undefined,
+      pagenation,
+    );
   }
 
   // @Get()
